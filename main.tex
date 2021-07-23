@@ -1,0 +1,50 @@
+% RECOMMENDED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[graybox]{svmult}
+
+% choose options for [] as required from the list
+% in the Reference Guide
+
+\usepackage{type1cm} % activate if the above 3 fonts are not available on your system
+\usepackage{makeidx} % allows index generation
+\usepackage{graphicx} % standard LaTeX graphics tool when including figure files
+\usepackage{multicol} % used for the two-column index
+\usepackage[bottom]{footmisc} % places footnotes at page bottom
+\usepackage{svg}
+\usepackage{booktabs}
+\usepackage{newtxtext}
+\usepackage{newtxmath} % selects Times Roman as basic font
+\usepackage{lipsum}
+\usepackage{comment}
+
+\usepackage[style=apa, backend=biber]{biblatex}
+
+\DeclareFieldFormat{apacase}{#1}
+
+\DeclareLanguageMapping{american}{american-apa}
+\let \citeNP \cite
+\let \citeA \textcite
+\let \cite \parencite
+
+\bibliography{./references.bib}
+
+% see the list of further useful packages
+% in the Reference Guide
+
+\makeindex             % used for the subject index
+                       % please use the style svind.ist with
+                       % your makeindex program
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\input{./sections/00_title.tex}
+\input{./sections/01_intro.tex}
+\input{./sections/02_relatedwork.tex}
+\input{./sections/03_method.tex}
+\input{./sections/04_results.tex}
+\input{./sections/05_discussion.tex}
+\input{./sections/06_limitations.tex}
+\input{./sections/07_summary.tex}
+\input{./sections/08_appendices.tex}
+\input{./sections/09_references.tex}
+\end{document}
