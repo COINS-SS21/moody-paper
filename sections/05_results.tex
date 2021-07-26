@@ -39,34 +39,40 @@ formel:
 
 \subsection{Vocal Emotion Recognition}
 \label{subsec:results_vocal_emotion_recognition}
-Since the AlexNet was trained on the four different sets of data (RAVEDESS, EMO-DB, TESS, JL-Corpus) to get as much variety as possible, the accuracy of the model was about 87.17\% (cf. Figure \ref{fig:alexnet_loss_accuracy}).
+Since the AlexNet was trained on the four different sets of data (RAVEDESS, EMO-DB, TESS, JL-Corpus) to get as much variety as possible, the accuracy of the model was about 87.17\% (cf. Figure \ref{fig:Accuracy by Epoch}). 
 
 \begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{assets/alexnet_accuracy.png}
-\includegraphics[width=1\textwidth]{assets/alexnet_loss.png}
-\caption{Caption}
-\label{fig:alexnet_loss_accuracy}
+\caption{Accuracy by Epoch}
+\label{fig:Accuracy by Epoch}
 \end{figure}
 
-To get the best possible result, early stopping was included. This was best at the eighth epoch, as the loss did not change much there either (cf. Figure \ref{fig:alexnet_loss_accuracy}). 
+To get the best possible result, early stopping was included. This was best at the eighth epoch, as the loss did not change much there either (cf. Figure \ref{fig:CrossEntryLoss by Epoch}).
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{assets/alexnet_loss.png}
+\caption{Cross Entry Loss by Epoch}
+\label{fig:CrossEntryLoss by Epoch}
+\end{figure}
 
-The difference to the Resnet model, apart from minor differences in accuracy, was only the size of the model. The AlexNet has a size of 32.3 MB, whereas the ResNet has 59.6 MB, almost twice as large. Since the data model is reloaded in the browser every time the voice emotion model is used, which takes up time as well as memory, we finally decided to use the AlexNet. It has a very good accuracy and a small memory size, which is good for everyday use. 
+The difference to the Res-Net model, apart from minor differences in accuracy, was only the size of the model. The AlexNet has a size of 32.3 MB, whereas the Res-Net has 59.6 MB, almost twice as large. Since the data model is reloaded in the browser every time the voice emotion model is used, which takes up time as well as memory, we finally decided to use the AlexNet. It has a very good accuracy and a small memory size, which is good for everyday use.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[width=1\textwidth]{assets/resnet_accuracy.png}
-\caption{Caption}
+\caption{Res-Net Accuracy}
 \label{fig:resnet_accuracy}
 \end{figure}
 
 Finally, the confusion matrix shows that our model has fairly high prediction values and very low deviations for all emotions (cf. Figure \ref{fig:alexnet_confusion_matrix}).
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[width=1\textwidth]{assets/alexnet_confusion_matrix.png}
-\caption{Caption}
+\caption{AlexNet Confusion Matrix}
 \label{fig:alexnet_confusion_matrix}
 \end{figure}
 
-The voice emotion model can be activated optionally at any time during a meeting. It can be added during any meeting or just at the beginning of the meeting and will be then downloaded through the browser. During the meeting, in addition to the emotion rollercoaster, the voice emotions can also be determined at the current time. A time span of 2.1 seconds is always taken to track the current emotion, which is delivering a good prediction of the emotion at that moment. At the end of the meeting a moving average can be calculated, looking at all the voice emotion tracked in that meeting, to get the most valuable and usable result.  
+The voice emotion model can be activated optionally at any time during a meeting. It can be added during any meeting or just at the beginning of the meeting and will be then downloaded through the browser. During the meeting, in addition to the emotion roller-coaster, the voice emotions can also be determined at the current time. A time span of 2.1 seconds is always taken to track the current emotion, which is delivering a good prediction of the emotion at that moment. At the end of the meeting a moving average can be calculated, looking at all the voice emotion tracked in that meeting, to get the most valuable and usable result.  
