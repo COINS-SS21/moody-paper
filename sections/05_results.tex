@@ -15,7 +15,7 @@ Exemplarily, Figure \ref{fig:moody_statistics_screenshot} shows a screenshot of 
 \begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{assets/moody_statistics_screenshot.png}
-\caption{Caption}
+\caption{Recorded statistics of the status presentation on the 6th July 2021}
 \label{fig:moody_statistics_screenshot}
 \end{figure}
 
@@ -26,47 +26,40 @@ Since we adopt the pre-developed \texttt{faceapi.js} and its two underlying mode
 \begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{assets/moody_faces_screenshot.png}
-\caption{Caption}
+\caption{Presenter's view of the detected faces in the according tab ``Faces''}
 \label{fig:moody_faces_screenshot}
 \end{figure}
 
-The models receive every second a freeze frame from the video conference window with all participants' cameras and calculate every second the probabilities for the current face emotion per person respectively per detected face. The probabilities are shown as values between 0 and 1. Exemplarily, ``happy (0.8)'' and ``neutral (0.2)'' mean that the particular face looks like 80\% happy and smiling and 20\% neutral. paul ekman emotions...
- if a face 99\% smiles and looks happy. Every emotion from. The formula 
-formel:
-\begin{itemize}
-\item score zusammensetzung: https://github.com/COINS-SS21/moody/blob/main/src/meetings/speakerVoiceEmotionUtils.ts, der score ist pro person und dann noch der durchscnitt von allen teilnehemern
-\end{itemize}
+The models receive every second a freezed frame from the video conference window with all participants' cameras and calculate every second the probabilities for the current \citeA{ekman_universal_1997} emotion per person respectively per detected face. Thus, every emotion out of neutral, happy, sad, angry, fearful, disgusted and surprised gets a probability between 0 and 1 assigned. Exemplarily, ``happy (0.8)'' and ``neutral (0.2)'' mean that the particular face looks like 80\% happy and smiling, and is by 20\% neutrally predicted. In order to receive the overall audience emotion score to visualize in the Emotion Rollercoaster (cf. Figure \ref{fig:moody_statistics_screenshot}) we calculate the mean face emotion value from all detected faces. The emotion score lies between -1 and 1, since we assign the emotions from \citeA{ekman_universal_1997} to negative, neutral and positive values. The probabilities for happy and surprised are assigned to 1, neutral to 0 and sad, disgusted, angry and fearful to -1.
 
 \subsection{Vocal Emotion Recognition}
 \label{subsec:results_vocal_emotion_recognition}
-Since the AlexNet was trained on the four different sets of data (RAVEDESS, EMO-DB, TESS, JL-Corpus) to get as much variety as possible, the accuracy of the model was about 87.17\% (cf. Figure \ref{fig:alexnet_accuracy}). 
+Since the AlexNet was trained on the four different data sets (RAVEDESS, EMO-DB, TESS, JL-Corpus) to get as much variety as possible, the accuracy of the model is 87.17\% (cf. \nameref{app:appendix}, Figure~\ref{fig:alexnet_accuracy}). 
 
-\begin{figure}
+To get the best possible result, early stopping is included. This is best at the eighth epoch, as the loss does not change significantly afterwards (cf. \nameref{app:appendix}, Figure~\ref{fig:alexnet_loss}).
+
+The difference to the ResNet model, apart from minor differences in accuracy, is mainly the size of the model (cf. \nameref{app:appendix}, Figures~\ref{fig:resnet_accuracy}~and~\ref{fig:resnet_loss}). The AlexNet has a size of 32.3 MB whereas the ResNet is almost twice as big with a size of 59.6 MB. Since the data model is reloaded in the browser every time the voice emotion model is used, which takes up time as well as memory, we finally decided to use the AlexNet. It has solid accuracy and smaller memory size which is ideal for usage on end-user devices. Table \ref{tab:model_comparison} depicts the model metrics in comparison.
+
+\begin{table}
+\setlength{\tabcolsep}{18pt}
+\renewcommand{\arraystretch}{1.5}
 \centering
-\includegraphics[width=1\textwidth]{assets/alexnet_accuracy.png}
-\caption{Accuracy by Epoch}
-\label{fig:alexnet_accuracy}
-\end{figure}
+\begin{tabular}{l|ll}
+                       & AlexNet            & ResNet18         \\ \hline
+Training accuracy      & \textbf{95.66\%}   & 91.43\%          \\
+Validation accuracy    & 87.17\%            & \textbf{87.85\%} \\
+Training loss          & \textbf{0.1297}    & 0.2521           \\
+Validation loss        & 0.3827             & \textbf{0.3520}  \\
+Best epoch             & \textbf{30}        & 35               \\
+Epoch (early stopping) & 8                  & \textbf{7}       \\
+Model size             & \textbf{32.3 MB}   & 59.6 MB          \\
+Training duration      & \textbf{11min 17s} & 21min 51s        \\
+\end{tabular}
+\caption{Model metrics in comparison. The AlexNet model is used because it is more parsimonious in model size with a comparable accuracy and cross-entropy loss. Bold values are preferred.}
+\label{tab:model_comparison}
+\end{table}
 
-To get the best possible result, early stopping was included. This was best at the eighth epoch, as the loss did not change much there either (cf. Figure \ref{fig:alexnet_loss}).
-
-\begin{figure}
-\centering
-\includegraphics[width=1\textwidth]{assets/alexnet_loss.png}
-\caption{Cross Entry Loss by Epoch}
-\label{fig:alexnet_loss}
-\end{figure}
-
-The difference to the ResNet model, apart from minor differences in accuracy, was mainly the size of the model. The AlexNet has a size of 32.3 MB whereas the ResNet is almost twice as big with a size of 59.6 MB. Since the data model is reloaded in the browser every time the voice emotion model is used, which takes up time as well as memory, we finally decided to use the AlexNet. It has solid accuracy and smaller memory size which is ideal for usage on end-user devices.
-
-\begin{figure}
-\centering
-\includegraphics[width=1\textwidth]{assets/resnet_accuracy.png}
-\caption{ResNet Accuracy}
-\label{fig:resnet_accuracy}
-\end{figure}
-
-Finally, the confusion matrix shows that our model has fairly high prediction values and very low deviations for all emotions (cf. Figure \ref{fig:alexnet_confusion_matrix}).
+Finally, the confusion matrix shows that our model has fairly high true prediction ratios and low deviations for almost all emotions (cf. Figure \ref{fig:alexnet_confusion_matrix}). The highest ratio of wrong predictions is for the emotion ``sad''. While the model predicts 71.19\% correctly, it predicts ``neutral'' wrongly in 20.90\% of all cases in the validation set.
 
 \begin{figure}
 \centering
@@ -75,4 +68,4 @@ Finally, the confusion matrix shows that our model has fairly high prediction va
 \label{fig:alexnet_confusion_matrix}
 \end{figure}
 
-The voice emotion model can be activated optionally at any time during a meeting. It can be added during any meeting or just at the beginning of the meeting and will be then downloaded through the browser. During the meeting, in addition to the emotion roller-coaster, the voice emotions can also be determined at the current time. A time span of 2.1 seconds is always taken to track the current emotion, which is delivering a good prediction of the emotion at that moment. At the end of the meeting a moving average can be calculated, looking at all the voice emotion tracked in that meeting, to get the most valuable and usable result.  
+The voice emotion model can be activated optionally at any time during a meeting. It can be activated during the whole meeting or just at the beginning or end of the meeting and will then be downloaded by the browser in case it is not yet cached. During the meeting, in addition to the Emotion Rollercoaster, the voice emotions can also be determined in real-time. A time span of 2.1 seconds is always taken to track the current emotion, which is delivering a good prediction of the emotion at that moment. The app calculates a moving average to make the prediction curves smoother and better readable. This way, the presenter can identify emotion trends more clearly even during longer meetings. Proper values for the moving average span are guessed in real-time by calculating $10 \cdot std(E) + log_{10}(N)$ for the $N$ tracked emotions $E$ and can be overwritten by the user after a meeting.

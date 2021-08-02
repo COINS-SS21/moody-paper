@@ -1,14 +1,12 @@
 \section{Limitations and Future Work}
 \label{sec:limitations_and_future_work}
-\begin{itemize}
-    \item Alle 2,1 sekunden tracking voice
-falls satz unterbrechung
-falsch satz emotions interpretiert
-\item Rolling estimator, der die 2,1 sekunden Zeitfenster immer leicht versetzt predicted könnte das problem verhindern
-\item Andere sprachen
-andere intonationen
-andere emotions erkennung
-\item Aktuell voll auf englisch ausgelegt
-Aber, neu: Deutsch
-Hypothese: Zwei Modelle für eine weibliche und männliche Stimme könnten besser sein
-\end{itemize}
+While the Moody web app is able to capture and persist emotions with reasonable accuracy in real-time during virtual meetings, there is still potential for improvement and future work. In addition, at the time of writing, certain limitations are imposed by the early stage of development of \texttt{onnxruntime-web} and the implementations of web standards in major browsers.
+
+The current implementation of the voice emotion model predicts the speaker's vocal emotions in windows of 2.1 seconds. This way of predicting is unfortunately prone to the start and end of a sound sequence even though we already counteract this behavior by using random shifting during data augmentation. One way to make the model more robust against shifted sentences might be the usage of a rolling estimator. Instead of predicting in 2.1-second windows, one could add three estimators each shifted by 0.3 seconds and perform three additional predictions on the shifted sound sequences. In the end, one would reconcile the results to one predicted value, for example by averaging. This way, the impact on the prediction result of sentences starting in one window and ending in another window can eventually be reduced.
+
+A limitation going in line with the rolling estimator is the computational power required to perform multiple predictions simultaneously. As the machine learning model runs on the end-user device it is important not to impact the user experience. \texttt{onnxruntime-web} does not yet support all operators needed by the voice model in WebGL\footnote{Current status can be checked here: \url{https://github.com/microsoft/onnxruntime/tree/master/js/web#webgl-backend} (last accessed: 07/29/2021)}. Therefore, it might be necessary to wait until the GPU-accelerated WebGL context is supported by ONNX before implementing this feature.
+
+Another hypothesis for improving the voice emotion recognition accuracy is to add more data (e.g. by creating an own dataset) and to try out language and gender-specific models.
+
+A limitation of the current web app is the feature completeness of Web Media APIs in different browsers. For example, Safari does not allow selecting a specific window when sharing the user screen. This way it is not possible to use the Moody app with only one screen. Mozilla Firefox does not support an audio sample rate different from the default sample rate of the user device\footnote{Current status can be checked here: \url{https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/sampleRate} (last accessed: 07/29/2021)}. This leads to some users not being able to use the voice emotion recognition if their device does not use the sample rate 22,050 which the model expects.
+
